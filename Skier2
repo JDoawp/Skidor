@@ -1,0 +1,14 @@
+package jss;
+//subklass av skiCompetition
+public class Skier2 extends SkiCompetition implements Runnable{
+
+	protected Skier2(String name, String country) {
+		super(name, country);
+		// TODO Auto-generated constructor stub
+	}
+public Skier2() {}
+public void run() {
+		Skier2 skier2=new Skier2("Pirjo Koponen","Finland");
+		System.out.println(skier2.getName()+"\n"+skier2.getCountry());
+	}
+}
