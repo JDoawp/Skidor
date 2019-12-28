@@ -1,0 +1,25 @@
+package jss;
+
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+//subklass av SkiCompetition
+public class Skier1 extends SkiCompetition implements Runnable{
+
+	private @FXML Label labelSkier1;
+	
+protected Skier1(String name, String country) {
+		super(name, country);
+		// TODO Auto-generated constructor stub
+	}
+
+	public Skier1() {
+	// TODO Auto-generated constructor stub
+}
+
+	public void run() {
+		Skier1 skier1=new Skier1("Tiril Andersen", "Norway");
+	System.out.println(skier1.getName()+"\n"+skier1.getCountry());
+	
+	}
+	
+}
