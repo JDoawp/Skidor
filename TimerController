@@ -1,0 +1,313 @@
+package jss;
+
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.util.Duration;
+//subklass till interface Settings
+public class TimerController implements Settings {
+	
+	private @FXML Button btnRunTimer=new Button("Start");
+	private @FXML Button btnStopTimer1=new Button("Stop");
+	private @FXML Button btnStopTimer2=new Button("Stop");
+	private @FXML Button btnStopTimer3=new Button("Stop");
+
+	private @FXML Label label1;
+	private @FXML Label label2;
+	private @FXML Label label3;
+    private @FXML Label labelSkier1, labelSkier2, labelSkier3;
+	//startclock one
+	public Timeline time= new Timeline();
+	private Duration newValue=time.getCurrentTime();
+	private int hourTime=(int)newValue.toHours();
+	private int minTime = (int) newValue.toMinutes();
+	private int secTime= (int) newValue.toSeconds();
+	//startclock two
+	public Timeline time2= new Timeline();
+	private Duration newValue2=time2.getCurrentTime();
+	private int hourTime2=(int)newValue2.toHours();
+	private int minTime2 = (int) newValue2.toMinutes();
+	private int secTime2= (int) newValue2.toSeconds();
+   //startclock three
+	public Timeline time3= new Timeline();
+	private Duration newValue3=time3.getCurrentTime();
+	private int hourTime3=(int)newValue3.toHours();
+	private int minTime3 = (int) newValue3.toMinutes();
+	private int secTime3= (int) newValue3.toSeconds();
+	boolean clicked = false;
+
+	
+	
+	
+	//härifrån startas alla timerna med button start, just nu är det inställt på sek,min,timme.
+	public void btnRunTimer() {
+if(!clicked) {
+getTimer1();
+getTimer2();
+getTimer3();
+getSkier();//testade att skriva ut trådar i consolen från klasserna skier1,skier2,skier3
+
+}
+else{
+	getRestartTimer1(); //omstart av timern
+	getRestartTimer2();//omstart av timern
+	getRestartTimer3();//omstart av timern
+}
+
+clicked = ! clicked;
+	}
+	//går att bygga på stopfunktionen med att ladda upp senaste tid i tabellen?
+	public void btnstopTimer1() {
+		time.stop();
+	}
+public void btnstopTimer2() {
+		time2.stop();
+	}
+public void btnstopTimer3() {
+	time3.stop();
+}
+	@Override
+	public void individualStart() {
+		// kod för indiviudell start
+		
+	}
+
+	@Override
+	public void massStart() {
+		// kod för massstart
+		
+	}
+
+	@Override
+	public void huntingStart() {
+		// kod för huntingstart
+		
+	}
+
+	@Override
+	public void setTimer1() {
+		//matteinställningar på timer 1
+		secTime++;
+		label1.setText(Integer.toString(hourTime)+":"+Integer.toString(minTime)+":"+Integer.toString(secTime));//hämtar get 
+
+		if(secTime/60>=1){ 
+			secTime%=60;  
+            
+			minTime++;
+            if(minTime/60>=1) {
+				minTime%=60;
+			}
+			if(minTime==59) {
+				hourTime++;
+			}
+		}
+		
+	}
+
+	@Override
+	public void setTimer2() {
+		//inställningar på timer 2
+		secTime2++;
+		label2.setText(Integer.toString(hourTime2)+":"+Integer.toString(minTime2)+":"+Integer.toString(secTime2));//hämtar get 
+
+		if(secTime2/60>=1){ 
+			secTime2%=60;  
+
+			minTime2++;
+            if(minTime2/60>=1) {
+				minTime2%=60;
+			}
+			if(minTime2==59) {
+				hourTime2++;
+			}
+		}
+		
+		
+	}
+
+	@Override
+	public void setTimer3() {
+		//inställningar på timer 3
+		secTime3++;
+		label3.setText(Integer.toString(hourTime3)+":"+Integer.toString(minTime3)+":"+Integer.toString(secTime3));//hämtar get 
+
+		if(secTime3/60>=1){ 
+			secTime3%=60;  
+
+			minTime3++;
+           if(minTime3/60>=1) {
+				minTime3%=60;
+			}
+			if(minTime3==59) {
+				hourTime3++;
+			}
+		}
+		
+		
+	}
+
+	@Override
+	public void setAnimationTimer1() {
+		//animationskod för timer 1
+		try {
+
+			time.setCycleCount(Timeline.INDEFINITE);
+			KeyFrame frame=new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent arg0) {
+					setTimer1();//inställningarna på klockan läggs in här.
+				}
+			});
+			time.getKeyFrames().add(frame);
+			time.playFromStart();//startar klockan 
+
+		}catch(Exception e) {
+			System.out.println("något fel");
+
+		}
+
+	
+	}
+
+	@Override
+	public void setAnimationTimer2() {
+		//animationskod för timer 2
+		try {
+
+			time2.setCycleCount(Timeline.INDEFINITE);
+			KeyFrame frame2=new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent arg0) {
+					setTimer2();//inställningarna på klockan läggs in här.
+				}
+			});
+			time2.getKeyFrames().add(frame2);
+			time2.playFromStart();//startar klockan 
+
+		}catch(Exception e) {
+			System.out.println("något fel");
+
+		}
+}
+
+	@Override
+	public void setAnimationTimer3() {
+		//animationskod för timer 3
+		try {
+
+			time3.setCycleCount(Timeline.INDEFINITE);
+			KeyFrame frame3=new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent arg0) {
+					setTimer3();//inställningarna på klockan läggs in här.
+				}
+			});
+			time3.getKeyFrames().add(frame3);
+			time3.playFromStart();//startar klockan 
+
+		}catch(Exception e) {
+			System.out.println("något fel");
+
+		}
+	}
+		private void getSkier() {
+			//skriver ut trådarna
+			Thread ski1=new Thread(new Skier1());//klassen Trådar läggs in här
+			ski1.start();
+			labelSkier1.setText("Tiril Anderssen, Norway");//namn visas i giun
+			Thread ski2=new Thread(new Skier2());
+			ski2.start();
+			labelSkier2.setText("Pirjo Koponen, Finland");//namn visas i guin
+			Thread ski3=new Thread(new Skier3());
+			ski3.start();
+			labelSkier3.setText("Anna Domeij, Sweden");//namn visas i guin
+		
+	}
+	@Override
+	public void getTimer1() {
+		setAnimationTimer1();
+	}
+	@Override
+	public void getTimer2() {
+		setAnimationTimer2();
+		
+	}
+	@Override
+	public void getTimer3() {
+		setAnimationTimer3();
+		
+	}
+	@Override
+	public void setRestartTimer1() {
+		//omstart på stopwatchklockan
+		
+			//nollställer tiden
+			secTime = secTime-secTime;
+			minTime = minTime-minTime;
+			hourTime=hourTime-hourTime;
+			//startar om klockan
+			label1.setText(String.format("%01d ",hourTime)+":"+String.format("%d",minTime)+":"+String.format("%d",secTime));//hämtar get
+            time.getDelay();
+			time.playFromStart();
+		
+
+		
+	}
+	@Override
+	public void setRestartTimer2() {
+		//omstart på stopwatchklockan
+		
+		//nollställer tiden
+		secTime2 = secTime2-secTime2;
+		minTime2 = minTime2-minTime2;
+		hourTime2=hourTime2-hourTime2;
+		//startar om klockan
+		label2.setText(String.format("%01d ",hourTime2)+":"+String.format("%d",minTime2)+":"+String.format("%d",secTime2));//hämtar get
+        time2.getDelay();
+		time2.playFromStart();
+	
+
+		
+	}
+	@Override
+	public void setRestartTimer3() {
+		//omstart på stopwatchklockan
+		
+		//nollställer tiden
+		secTime3 = secTime3-secTime3;
+		minTime3 = minTime3-minTime3;
+		hourTime3=hourTime3-hourTime3;
+		//startar om klockan
+		label3.setText(String.format("%01d ",hourTime3)+":"+String.format("%d",minTime3)+":"+String.format("%d",secTime3));//hämtar get
+        time3.getDelay();
+		time3.playFromStart();
+	
+
+		
+	}
+	@Override
+	public void getRestartTimer1() {
+		setRestartTimer1(); 
+		
+	}
+	@Override
+	public void getRestartTimer2() {
+		setRestartTimer2();
+		
+	}
+	@Override
+	public void getRestartTimer3() {
+		setRestartTimer3();
+		
+	}
+	
+	
+
+}
