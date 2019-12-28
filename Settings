@@ -1,0 +1,36 @@
+package jss;
+
+import javafx.animation.Timeline;
+
+
+public interface Settings {
+	public static final String name = "";
+	public static final String country = "";
+	
+	public void setTimer1();
+	public void setTimer2();
+	public void setTimer3();
+	
+	public void setAnimationTimer1();
+	public void setAnimationTimer2();
+	public void setAnimationTimer3();
+	
+	public void setRestartTimer1();
+	public void setRestartTimer2();
+	public void setRestartTimer3();
+
+	public void getRestartTimer1();
+	public void getRestartTimer2();
+	public void getRestartTimer3();
+
+	public void getTimer1();
+	public void getTimer2();
+	public void getTimer3();
+	
+	public void individualStart();
+	
+	public void massStart();
+	
+	public void huntingStart();
+	
+}
