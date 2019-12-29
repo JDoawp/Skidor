@@ -1,11 +1,17 @@
 package jss;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+import java.util.concurrent.TimeUnit;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.util.Duration;
 //subklass till interface Settings
@@ -15,7 +21,11 @@ public class TimerController implements Settings {
 	private @FXML Button btnStopTimer1=new Button("Stop");
 	private @FXML Button btnStopTimer2=new Button("Stop");
 	private @FXML Button btnStopTimer3=new Button("Stop");
-
+	
+	private @FXML CheckBox massStart;
+	private @FXML CheckBox huntingStart;
+	private @FXML CheckBox individualStart;
+	
 	private @FXML Label label1;
 	private @FXML Label label2;
 	private @FXML Label label3;
@@ -40,25 +50,50 @@ public class TimerController implements Settings {
 	private int secTime3= (int) newValue3.toSeconds();
 	boolean clicked = false;
 
+	public void initialize(URL url, ResourceBundle rb ) {
+		
 	
-	
-	
+	}
 	//härifrån startas alla timerna med button start, just nu är det inställt på sek,min,timme.
+	//den är begränsad till att fungera på två knapp tryck.
+	//Jag har ett annat sätt som blir estetistl fulare, att lägga in en restart knapp
+	//då går den att omstarta oändligt många gånger.
 	public void btnRunTimer() {
 if(!clicked) {
-getTimer1();
-getTimer2();
-getTimer3();
+	if(massStart.isSelected()) {
+		massStart();
+	}
+	if(huntingStart.isSelected()) {
+		huntingStart();
+}
+	if(individualStart.isSelected()) {
+		
+	}
+
 getSkier();//testade att skriva ut trådar i consolen från klasserna skier1,skier2,skier3
 
 }
 else{
-	getRestartTimer1(); //omstart av timern
-	getRestartTimer2();//omstart av timern
-	getRestartTimer3();//omstart av timern
+	if(massStart.isSelected()) {
+		restartMassStart() ;
+	}
+	if(huntingStart.isSelected()) {
+		restartHuntingStart();
+}
+	if(individualStart.isSelected()) {
+		
+	}
+		
 }
 
 clicked = ! clicked;
+	}
+	//restarthuntingmetoderna
+	private void restartHuntingStart() {
+		getRestartTimer1();
+		getRestartDelayTimer2();
+		getRestartDelayTimer3();
+		
 	}
 	//går att bygga på stopfunktionen med att ladda upp senaste tid i tabellen?
 	public void btnstopTimer1() {
@@ -78,17 +113,77 @@ public void btnstopTimer3() {
 
 	@Override
 	public void massStart() {
-		// kod för massstart
+		getTimer1();
+		getTimer2();
+		getTimer3();
 		
 	}
 
 	@Override
 	public void huntingStart() {
-		// kod för huntingstart
+		getTimer1();
+		getDelayTimer2();
+		getDelayTimer3();
 		
 	}
 
-	@Override
+	public void restartMassStart() {
+		getRestartTimer1(); //omstart av timern
+		getRestartTimer2();//omstart av timern
+		getRestartTimer3();//omstart av timern
+	
+	}
+	public void setDelayTimer2(){
+	//animationskod för timer 2
+			try {
+
+				time2.setCycleCount(Timeline.INDEFINITE);
+				KeyFrame frame2=new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
+
+					@Override
+					public void handle(ActionEvent arg0) {
+						setTimer2();//inställningarna på klockan läggs in här.
+					}
+				});
+				time2.getKeyFrames().add(frame2);
+				time2.setDelay(Duration.seconds(14));
+				time2.playFromStart();//startar klockan 
+
+			}catch(Exception e) {
+				System.out.println("något fel");
+
+			}
+
+}
+public void getDelayTimer2() {
+	setDelayTimer2();
+}
+public void setDelayTimer3(){
+	//animationskod för timer 3
+			try {
+
+				time3.setCycleCount(Timeline.INDEFINITE);
+				KeyFrame frame3=new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
+
+					@Override
+					public void handle(ActionEvent arg0) {
+						setTimer3();//inställningarna på klockan läggs in här.
+					}
+				});
+				time3.getKeyFrames().add(frame3);
+				time3.setDelay(Duration.seconds(28));
+                time3.playFromStart();//startar klockan 
+
+			}catch(Exception e) {
+				System.out.println("något fel");
+
+			}
+	
+}	
+public void getDelayTimer3() {
+	setDelayTimer3();
+}
+@Override
 	public void setTimer1() {
 		//matteinställningar på timer 1
 		secTime++;
@@ -188,6 +283,7 @@ public void btnstopTimer3() {
 				}
 			});
 			time2.getKeyFrames().add(frame2);
+			
 			time2.playFromStart();//startar klockan 
 
 		}catch(Exception e) {
@@ -286,13 +382,47 @@ public void btnstopTimer3() {
 		hourTime3=hourTime3-hourTime3;
 		//startar om klockan
 		label3.setText(String.format("%01d ",hourTime3)+":"+String.format("%d",minTime3)+":"+String.format("%d",secTime3));//hämtar get
-        time3.getDelay();
+		time3.getDelay();
 		time3.playFromStart();
 	
 
 		
 	}
-	@Override
+	public void setRestartDelayTimer3() {
+		//omstart på stopwatchklockan
+		
+				//nollställer tiden
+				secTime3 = secTime3-secTime3;
+				minTime3 = minTime3-minTime3;
+				hourTime3=hourTime3-hourTime3;
+				//startar om klockan
+				label3.setText(String.format("%01d ",hourTime3)+":"+String.format("%d",minTime3)+":"+String.format("%d",secTime3));//hämtar get
+		        time3.setDelay(Duration.seconds(28));
+				time3.getDelay();
+				time3.playFromStart();
+	
+	}
+	public void getRestartDelayTimer3() {
+		setRestartDelayTimer3();
+	}
+	public void setRestartDelayTimer2() {
+	//omstart på stopwatchklockan
+	
+			//nollställer tiden
+			secTime2 = secTime2-secTime2;
+			minTime2 = minTime2-minTime2;
+			hourTime2=hourTime2-hourTime2;
+			//startar om klockan
+			label2.setText(String.format("%01d ",hourTime2)+":"+String.format("%d",minTime2)+":"+String.format("%d",secTime2));//hämtar get
+	        time2.setDelay(Duration.seconds(14));
+            time2.getDelay();
+			time2.playFromStart();
+		
+	}
+	public void getRestartDelayTimer2() {
+		setRestartDelayTimer2();
+	}
+@Override
 	public void getRestartTimer1() {
 		setRestartTimer1(); 
 		
